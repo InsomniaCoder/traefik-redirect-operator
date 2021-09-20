@@ -18,7 +18,6 @@ package controllers
 
 import (
 	"context"
-	"github.com/go-logr/logr"
 
 	traefikv1 "github.com/InsomniaCoder/traefik-redirect-operator/api/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -29,7 +28,6 @@ import (
 // TraefikRedirectReconciler reconciles a TraefikRedirect object
 type TraefikRedirectReconciler struct {
 	client.Client
-	Log    logr.Logger
 	Scheme *runtime.Scheme
 }
 
@@ -49,7 +47,7 @@ type TraefikRedirectReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.8.3/pkg/reconcile
 func (r *TraefikRedirectReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = r.Log.WithValues("TraefikRedirect", req.NamespacedName)
+	_ = ctrl.Log.WithValues("TraefikRedirect", req.NamespacedName)
 
 	// your logic here
 

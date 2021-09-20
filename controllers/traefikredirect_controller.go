@@ -31,7 +31,7 @@ type TraefikRedirectReconciler struct {
 }
 
 //+kubebuilder:rbac:groups=traefik.porpaul,resources=traefikredirects,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=v1,resources=service,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=core,resources=service,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=extersions/v1beta1,resources=ingress,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=traefik.porpaul,resources=traefikredirects/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=traefik.porpaul,resources=traefikredirects/finalizers,verbs=update

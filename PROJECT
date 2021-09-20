@@ -1,0 +1,16 @@
+domain: porpaul
+layout:
+- go.kubebuilder.io/v3
+projectName: traefik-redirect-operator
+repo: github.com/InsomniaCoder/traefik-redirect-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: porpaul
+  group: traefik
+  kind: TraefikRedirect
+  path: github.com/InsomniaCoder/traefik-redirect-operator/api/v1
+  version: v1
+version: "3"

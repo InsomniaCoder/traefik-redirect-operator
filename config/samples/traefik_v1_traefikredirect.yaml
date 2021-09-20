@@ -1,0 +1,7 @@
+apiVersion: traefik.porpaul/v1
+kind: TraefikRedirect
+metadata:
+  name: traefikredirect-sample
+spec:
+  # Add fields here
+  foo: bar

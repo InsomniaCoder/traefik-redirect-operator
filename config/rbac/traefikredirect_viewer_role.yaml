@@ -1,0 +1,20 @@
+# permissions for end users to view traefikredirects.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: traefikredirect-viewer-role
+rules:
+- apiGroups:
+  - traefik.porpaul
+  resources:
+  - traefikredirects
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - traefik.porpaul
+  resources:
+  - traefikredirects/status
+  verbs:
+  - get

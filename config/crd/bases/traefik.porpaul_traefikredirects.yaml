@@ -1,0 +1,76 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.4.1
+  creationTimestamp: null
+  name: traefikredirects.traefik.porpaul
+spec:
+  group: traefik.porpaul
+  names:
+    kind: TraefikRedirect
+    listKind: TraefikRedirectList
+    plural: traefikredirects
+    singular: traefikredirect
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: TraefikRedirect is the Schema for the traefikredirects API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: 'TODO: add marker for regex validation of host and redirect
+              to url TraefikRedirectSpec defines the desired state of TraefikRedirect'
+            properties:
+              port:
+                description: Port port of the External name's server
+                type: integer
+              redirect-to:
+                description: RedirectTo url, or ip of ExternalName
+                type: string
+              traefik-host:
+                description: 'TraefikHost host name to expose in Traefik''s ingress
+                  Valid values are: - "public": Any traffic from public space - "external":  Whitelisted
+                  public traffic - "internal": Traffic running internally include
+                  intranet and internal api - "private": Cluster-only api'
+                type: string
+              traefik-type:
+                description: 'Important: Run "make" to regenerate code after modifying
+                  this file TraefikType traffic type: public, external, internal,
+                  private'
+                type: string
+            required:
+            - port
+            - redirect-to
+            - traefik-host
+            - traefik-type
+            type: object
+          status:
+            description: TraefikRedirectStatus defines the observed state of TraefikRedirect
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

@@ -24,6 +24,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
+const (
+	serviceNameFormat    string = "%s-svc-%s"
+	deploymentNameFormat string = "%s-expose-%s"
+)
+
 // TraefikRedirectReconciler reconciles a TraefikRedirect object
 type TraefikRedirectReconciler struct {
 	client.Client
@@ -39,7 +44,6 @@ type TraefikRedirectReconciler struct {
 func (r *TraefikRedirectReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	l := ctrl.Log.WithValues("TraefikRedirect", req.NamespacedName)
 	l.Info("start reconciling")
-
 
 	return ctrl.Result{}, nil
 }

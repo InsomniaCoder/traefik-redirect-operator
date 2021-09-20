@@ -20,22 +20,40 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+// TraefikType type of traffic to expose in Traefik's ingress
+type TraefikType string
+
+const (
+	// Public Any traffic from public space
+	Public TraefikType = "public"
+	// External Whitelisted public traffic
+	External TraefikType = "external"
+	// Internal Traffic running internally include intranet and internal api
+	Internal TraefikType = "internal"
+	// Private Cluster-only api
+	Private TraefikType = "private"
+)
 
 // TraefikRedirectSpec defines the desired state of TraefikRedirect
 type TraefikRedirectSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
-
-	// Foo is an example field of TraefikRedirect. Edit traefikredirect_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// TraefikType traffic type: public, external, internal, private
+	TraefikType TraefikType `json:"traefik-type"`
+	// TraefikHost host name to expose in Traefik's ingress
+	// Valid values are:
+	// - "public": Any traffic from public space
+	// - "external":  Whitelisted public traffic
+	// - "internal": Traffic running internally include intranet and internal api
+	// - "private": Cluster-only api
+	TraefikHost string `json:"traefik-host"`
+	// RedirectTo url, or ip of ExternalName
+	RedirectTo string `json:"redirect-to"`
+	// Port port of the External name's server
+	Port int `json:"port"`
 }
 
 // TraefikRedirectStatus defines the observed state of TraefikRedirect
 type TraefikRedirectStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
 }
 
 //+kubebuilder:object:root=true

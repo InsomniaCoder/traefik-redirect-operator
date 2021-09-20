@@ -18,22 +18,24 @@ package controllers
 
 import (
 	"context"
+	"github.com/go-logr/logr"
 
+	traefikv1 "github.com/InsomniaCoder/traefik-redirect-operator/api/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/log"
-
-	traefikv1 "github.com/InsomniaCoder/traefik-redirect-operator/api/v1"
 )
 
 // TraefikRedirectReconciler reconciles a TraefikRedirect object
 type TraefikRedirectReconciler struct {
 	client.Client
+	Log    logr.Logger
 	Scheme *runtime.Scheme
 }
 
 //+kubebuilder:rbac:groups=traefik.porpaul,resources=traefikredirects,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=v1,resources=service,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=extersions/v1beta1,resources=ingress,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=traefik.porpaul,resources=traefikredirects/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=traefik.porpaul,resources=traefikredirects/finalizers,verbs=update
 
@@ -41,13 +43,13 @@ type TraefikRedirectReconciler struct {
 // move the current state of the cluster closer to the desired state.
 // TODO(user): Modify the Reconcile function to compare the state specified by
 // the TraefikRedirect object against the actual cluster state, and then
-// perform operations to make the cluster state reflect the state specified by
+// perform operations to make the cluster states reflect the state specified by
 // the user.
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.8.3/pkg/reconcile
 func (r *TraefikRedirectReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	_ = r.Log.WithValues("TraefikRedirect", req.NamespacedName)
 
 	// your logic here
 

@@ -34,6 +34,7 @@ const (
 	Private TraefikType = "private"
 )
 
+// TODO: add marker for regex validation of host and redirect to url
 // TraefikRedirectSpec defines the desired state of TraefikRedirect
 type TraefikRedirectSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file

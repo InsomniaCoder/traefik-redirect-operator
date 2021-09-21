@@ -18,6 +18,7 @@ package controllers
 
 import (
 	"context"
+
 	traefikv1 "github.com/InsomniaCoder/traefik-redirect-operator/api/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"

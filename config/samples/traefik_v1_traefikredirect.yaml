@@ -4,4 +4,10 @@ metadata:
   name: traefikredirect-sample
 spec:
   # Add fields here
-  foo: bar
+  traefik-type: public
+  # exposed ingress
+  traefik-host: test.insomniacoder.com
+  # backend to redirect to
+  redirect-to: 10.2.0.102
+  # port of backend
+  port: 8081

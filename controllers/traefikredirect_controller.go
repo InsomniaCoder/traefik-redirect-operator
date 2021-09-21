@@ -18,7 +18,6 @@ package controllers
 
 import (
 	"context"
-
 	traefikv1 "github.com/InsomniaCoder/traefik-redirect-operator/api/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -28,7 +27,7 @@ import (
 )
 
 const (
-//externalServiceNameFormat string = "%s-external"
+	externalServiceNameFormat string = "%s-external"
 )
 
 // TraefikRedirectReconciler reconciles a TraefikRedirect object
@@ -64,6 +63,19 @@ func (r *TraefikRedirectReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 	}
 
 	logger.Info("got Traefik:", "traefik", traefikRedirect)
+
+	traefikType := traefikRedirect.Spec.TraefikType
+	traefikHost := traefikRedirect.Spec.TraefikHost
+	externalHost := traefikRedirect.Spec.RedirectTo
+	externalPort := traefikRedirect.Spec.Port
+
+	logger.Info("traefik type: ", "type", traefikType)
+	logger.Info("traefik host: ", "host", traefikHost)
+	logger.Info("external host: ", "host", externalHost)
+	logger.Info("external port: ", "port", externalPort)
+
+	namespace := traefikRedirect.Namespace
+	logger.Info("target namespace: ", "ns", namespace)
 
 	return ctrl.Result{}, nil
 }

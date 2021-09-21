@@ -1,0 +1,15 @@
+apiVersion: traefik.porpaul/v1
+kind: TraefikRedirect
+metadata:
+  name: traefikredirect-sample
+spec:
+  # Add fields here
+  # this does not fail validation
+  traefik-type: xxxx
+  # exposed ingress
+  traefik-host: test.insomniacoder.com
+  # backend to redirect to
+  redirect-to: 10.2.0.102
+  # port of backend
+  # this will fail validation
+  port: xxxx

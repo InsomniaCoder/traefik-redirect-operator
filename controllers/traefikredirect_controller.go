@@ -44,8 +44,8 @@ type TraefikRedirectReconciler struct {
 //+kubebuilder:rbac:groups=traefik.porpaul,resources=traefikredirects/finalizers,verbs=update
 
 func (r *TraefikRedirectReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	logger := log.Log.WithValues("TraefikRedirect", req.NamespacedName)
-	logger.Info("start reconciling")
+	logger := log.FromContext(ctx)
+	logger.Info("Start reconciling....")
 
 	var traefikRedirect traefikv1.TraefikRedirect
 	err := r.Get(ctx, req.NamespacedName, &traefikRedirect)
@@ -63,7 +63,7 @@ func (r *TraefikRedirectReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 		return ctrl.Result{}, err
 	}
 
-	logger.Info("got Traefik object: %v", traefikRedirect)
+	logger.Info("got Traefik:", "traefik", traefikRedirect)
 
 	return ctrl.Result{}, nil
 }

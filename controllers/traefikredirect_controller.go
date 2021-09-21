@@ -18,16 +18,22 @@ package controllers
 
 import (
 	"context"
+	"fmt"
+
 	traefikv1 "github.com/InsomniaCoder/traefik-redirect-operator/api/v1"
+	_ "k8s.io/api/core/v1"
+	networkv1 "k8s.io/api/networking/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 const (
-	externalServiceNameFormat string = "%s-external"
+	ingressNameFormat         string = "%s-traefik-ingress"
+	externalServiceNameFormat string = "%s-svc-external"
 )
 
 // TraefikRedirectReconciler reconciles a TraefikRedirect object
@@ -74,8 +80,22 @@ func (r *TraefikRedirectReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 	logger.Info("external host: ", "host", externalHost)
 	logger.Info("external port: ", "port", externalPort)
 
-	namespace := traefikRedirect.Namespace
-	logger.Info("target namespace: ", "ns", namespace)
+	logger.Info("target namespace: ", "ns", req.Namespace)
+
+	// check for Ingress and create one if it does not exist
+	ingressName := fmt.Sprintf(ingressNameFormat, traefikRedirect.Name)
+	serviceName := fmt.Sprintf(externalServiceNameFormat, traefikRedirect.Name)
+	var ingress networkv1.Ingress
+	err = r.Get(ctx, types.NamespacedName{Namespace: req.Namespace, Name: ingressName}, &ingress)
+
+	if err != nil {
+		if errors.IsNotFound(err) {
+			return r.createIngress(ctx, req, &traefikRedirect, ingressName, serviceName, traefikType, traefikHost)
+		} else {
+			logger.Error(err, "failed to get Ingress")
+			return ctrl.Result{}, err
+		}
+	}
 
 	return ctrl.Result{}, nil
 }

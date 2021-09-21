@@ -20,14 +20,15 @@ import (
 	"context"
 
 	traefikv1 "github.com/InsomniaCoder/traefik-redirect-operator/api/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/log"
 )
 
 const (
-	serviceNameFormat    string = "%s-svc-%s"
-	deploymentNameFormat string = "%s-expose-%s"
+//externalServiceNameFormat string = "%s-external"
 )
 
 // TraefikRedirectReconciler reconciles a TraefikRedirect object
@@ -43,8 +44,26 @@ type TraefikRedirectReconciler struct {
 //+kubebuilder:rbac:groups=traefik.porpaul,resources=traefikredirects/finalizers,verbs=update
 
 func (r *TraefikRedirectReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	l := ctrl.Log.WithValues("TraefikRedirect", req.NamespacedName)
-	l.Info("start reconciling")
+	logger := log.Log.WithValues("TraefikRedirect", req.NamespacedName)
+	logger.Info("start reconciling")
+
+	var traefikRedirect traefikv1.TraefikRedirect
+	err := r.Get(ctx, req.NamespacedName, &traefikRedirect)
+
+	if err != nil {
+		if errors.IsNotFound(err) {
+			// Request object not found, could have been deleted after reconcile request.
+			// Owned objects are automatically garbage collected. For additional cleanup logic use finalizers.
+			// Return and don't requeue
+			logger.Info("traefik redirect resource not found.")
+			return ctrl.Result{}, nil
+		}
+
+		logger.Error(err, "failed to get traefik redirect")
+		return ctrl.Result{}, err
+	}
+
+	logger.Info("got Traefik object: %v", traefikRedirect)
 
 	return ctrl.Result{}, nil
 }

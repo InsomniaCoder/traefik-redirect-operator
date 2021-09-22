@@ -55,8 +55,7 @@ type TraefikRedirectSpec struct {
 
 // TraefikRedirectStatus defines the observed state of TraefikRedirect
 type TraefikRedirectStatus struct {
-	// +optional
-	LastCheckedTime *metav1.Time `json:"lastCheckedTime,omitempty"`
+	LastCheckedTime *metav1.Time `json:"lastCheckedTime"`
 }
 
 //+kubebuilder:object:root=true

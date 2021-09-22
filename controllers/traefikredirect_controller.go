@@ -19,13 +19,15 @@ package controllers
 import (
 	"context"
 	"fmt"
-
 	traefikv1 "github.com/InsomniaCoder/traefik-redirect-operator/api/v1"
 	corev1 "k8s.io/api/core/v1"
 	networkv1 "k8s.io/api/networking/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	"time"
+
 	// controller-runtime defines client.Client that reads from Cache write to Kube API serer.
 	// defines Manager that manage clients and cache
 	// reconciler that compares cluster state, reconcile is called in response to cluster/external events.
@@ -120,6 +122,14 @@ func (r *TraefikRedirectReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 	}
 
 	logger.Info("managing ingress:", "ingress", ingress)
+
+	logger.Info("updating status:")
+	traefikRedirect.Status.LastCheckedTime = &v1.Time{Time: time.Now()}
+
+	if err := r.Status().Update(ctx, &traefikRedirect); err != nil {
+		logger.Error(err, "failed to update status")
+		return ctrl.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
 }

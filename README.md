@@ -13,3 +13,12 @@ This will save your cost of having dedicated ALB or other cloud-based load balan
 
 client -> www.insomniacoder.com (Register in Route53) -> Traefik ALB -> Ingress -> ExternalName service -> 10.2.0.102
 
+# How to use
+
+1. install the operator
+2. create the resource following `config/samples/traefik_v1_traefikredirect.yaml`
+3. get the resource to check that it is created
+   ![](screenshots/get-resource.png)
+4. you can see that ingress and service will be created as it should 
+   ![](screenshots/ingress.png)
+   ![](screenshots/svc.png)

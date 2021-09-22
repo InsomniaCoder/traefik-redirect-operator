@@ -129,5 +129,9 @@ func (r *TraefikRedirectReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 func (r *TraefikRedirectReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&traefikv1.TraefikRedirect{}).
+		// will reconcile the service if it's modified/deleted externally
+		Owns(&corev1.Service{}).
+		// will reconcile the ingress if it's modified/deleted externally
+		Owns(&networkv1.Ingress{}).
 		Complete(r)
 }

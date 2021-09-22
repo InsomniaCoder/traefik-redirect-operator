@@ -26,6 +26,11 @@ import (
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	// controller-runtime defines client.Client that reads from Cache write to Kube API serer.
+	// defines Manager that manage clients and cache
+	// reconciler that compares cluster state, reconcile is called in response to cluster/external events.
+	// event fires `reconcile.Request` object as an argument to Reconcile
+	// Reconcile returns ctrl.Result
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -101,6 +106,7 @@ func (r *TraefikRedirectReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 }
 
 // SetupWithManager sets up the controller with the Manager.
+// Manager manages shared dependencies such as Cache and Client
 func (r *TraefikRedirectReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&traefikv1.TraefikRedirect{}).
